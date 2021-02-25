@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card-body">
+    <h3 class="text-center">{{ course.course|upper }}</h3>
+    <p class="date text-end"><small>
+        instructor: {{ course.instructor }}
+        {{ course.datetime_start|date:"D d M" }},
+        -{{ course.start_end_time }}
+    </small></p>
+    <p>{{ course.description | safe }}</p>
+
+    <form action="{% url 'yogastudio:book_course' course.pk%}" method="POST">
+        {% csrf_token %}
+        {% if booked %}
+            <button type="submit" name="course_id" value="{{course.id}}"
+            class="btn btn-danger">Cancle</button>
+        {% else %}
+            <button type="submit" name="course_id" value="{{course.id}}"
+            class="btn btn-primary">Book</button> 
+        {% endif %}
+        - {{course.total_books}} Book{{course.total_books|pluralize}}
+    </form> 
+{% endblock %}
